@@ -1,9 +1,11 @@
 import numpy as np
 import pyopencl as pycl
 from pyopencl import array
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageOps
 import argparse
 
+import cv2
+import matplotlib.pyplot as plt
 
 
 def detect_circles(rgb_image_path: str, num_thetas: int = 100,
@@ -116,10 +118,18 @@ def detect_circles(rgb_image_path: str, num_thetas: int = 100,
     for i in range(len(final_circles)):
         print(f'X center: {final_circles[i][0]}, Y center: {final_circles[i][1]}, Diameter: {final_circles[i][2]}')
 
+    for i in range(len(final_circles)):
+        # print(f'X: {final_circles[i][0]}, Y: {final_circles[i][1]}, diameter: {final_circles[i][2] * 2}')
+        in_image = cv2.circle(np.asarray(in_image), (final_circles[i][0], final_circles[i][1]),
+                              int(final_circles[i][2] // 2), color=(255, 0, 0))
+
+    plt.imshow(in_image)
+    plt.show()
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--Path', help="path for the input RGB Image", default='examples/ferrari.jpg')
+    parser.add_argument('-p', '--Path', help="path for the input RGB Image", default='examples/coins.jpg')
     parser.add_argument('-n', '--NumThetas', help="step number of circle", default=100)
     parser.add_argument('-t', '--Threshold', help="percentage of votes to detect circles", default=0.6)
     parser.add_argument('-pt', '--PixelThreshold', help="pixel threshold to remove circle duplicates", default=5)

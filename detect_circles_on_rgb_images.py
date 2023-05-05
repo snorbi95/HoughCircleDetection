@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 
 def detect_circles(rgb_image_path: str, num_thetas: int = 100,
-                   accumulator_threshold: float = 0.6, pixel_threshold: int = 5) -> None:
+                   accumulator_threshold: float = 0.8, pixel_threshold: int = 5) -> None:
     """
     Function to perform Hough circle detection on the input RGB image
     and to print the X center, Y center and diameter of each detected circles.
@@ -46,10 +46,8 @@ def detect_circles(rgb_image_path: str, num_thetas: int = 100,
     in_image = Image.open(rgb_image_path)
     image = in_image.convert(mode='L')
     # 2. Perform edge detection and binarize on grayscale image
+    image = image.filter(ImageFilter.GaussianBlur)
     image = image.filter(ImageFilter.FIND_EDGES)
-    # image = ImageOps.equalize(image)
-    image = image.point(lambda p: 255 if p > 128 else 0)
-    # image.show()
 
     # 3. Convert to np array
     image = np.asarray(image, dtype=np.int32)
@@ -118,21 +116,13 @@ def detect_circles(rgb_image_path: str, num_thetas: int = 100,
     for i in range(len(final_circles)):
         print(f'X center: {final_circles[i][0]}, Y center: {final_circles[i][1]}, Diameter: {final_circles[i][2]}')
 
-    for i in range(len(final_circles)):
-        # print(f'X: {final_circles[i][0]}, Y: {final_circles[i][1]}, diameter: {final_circles[i][2] * 2}')
-        in_image = cv2.circle(np.asarray(in_image), (final_circles[i][0], final_circles[i][1]),
-                              int(final_circles[i][2] // 2), color=(255, 0, 0))
-
-    plt.imshow(in_image)
-    plt.show()
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--Path', help="path for the input RGB Image", default='examples/coins.jpg')
-    parser.add_argument('-n', '--NumThetas', help="step number of circle", default=100)
-    parser.add_argument('-t', '--Threshold', help="percentage of votes to detect circles", default=0.6)
-    parser.add_argument('-pt', '--PixelThreshold', help="pixel threshold to remove circle duplicates", default=5)
+    parser.add_argument('-n', '--NumThetas', help="step number of circle", default=120)
+    parser.add_argument('-t', '--Threshold', help="percentage of votes to detect circles", default=0.9)
+    parser.add_argument('-pt', '--PixelThreshold', help="pixel threshold to remove circle duplicates", default=10)
     args = parser.parse_args()
     detect_circles(args.Path, int(args.NumThetas), float(args.Threshold), int(args.PixelThreshold))
 

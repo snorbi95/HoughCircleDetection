@@ -4,9 +4,6 @@ from pyopencl import array
 from PIL import Image, ImageFilter, ImageOps
 import argparse
 
-import cv2
-import matplotlib.pyplot as plt
-
 
 def detect_circles(rgb_image_path: str, num_thetas: int = 100,
                    accumulator_threshold: float = 0.8, pixel_threshold: int = 5) -> None:
@@ -16,11 +13,11 @@ def detect_circles(rgb_image_path: str, num_thetas: int = 100,
     :param pixel_threshold: range of pixels, the function removes the circle duplicates
     :param rgb_image_path: file location of the input RGB image
     :param accumulator_threshold: percentage of votes should be given by the
-    accumulator to detect a circle in (X,Y) center
+    accumulator to detect a circle with (X,Y) center
     :param num_thetas: number of steps during the rotation
     """
 
-    # Initialize default parameters of minimum and maximum circle radiuses
+    # Initialize default parameters of minimum and maximum circle radius's
     min_radius = 25
     max_radius = 100
 
@@ -121,7 +118,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--Path', help="path for the input RGB Image", default='examples/coins.jpg')
     parser.add_argument('-n', '--NumThetas', help="step number of circle", default=120)
-    parser.add_argument('-t', '--Threshold', help="percentage of votes to detect circles", default=0.9)
+    parser.add_argument('-t', '--Threshold', help="ratio of votes to detect circles", default=0.9)
     parser.add_argument('-pt', '--PixelThreshold', help="pixel threshold to remove circle duplicates", default=10)
     args = parser.parse_args()
     detect_circles(args.Path, int(args.NumThetas), float(args.Threshold), int(args.PixelThreshold))

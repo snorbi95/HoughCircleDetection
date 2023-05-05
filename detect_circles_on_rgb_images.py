@@ -5,8 +5,8 @@ from PIL import Image, ImageFilter, ImageOps
 import argparse
 
 
-def detect_circles(rgb_image_path: str, num_thetas: int = 100,
-                   accumulator_threshold: float = 0.8, pixel_threshold: int = 5) -> None:
+def detect_circles(rgb_image_path: str, num_thetas: int = 120,
+                   accumulator_threshold: float = 0.9, pixel_threshold: int = 10) -> None:
     """
     Function to perform Hough circle detection on the input RGB image
     and to print the X center, Y center and diameter of each detected circles.

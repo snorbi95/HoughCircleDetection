@@ -40,7 +40,7 @@ def detect_circles(rgb_image_path: str, num_thetas: int = 120,
     # 1: Open image and convert ot grayscale
     in_image = Image.open(rgb_image_path)
     image = in_image.convert(mode='L')
-    # 2. Perform edge detection and binarize on grayscale image
+    # 2. Perform gaussian blur and edge detection on the grayscale image
     image = image.filter(ImageFilter.GaussianBlur)
     image = image.filter(ImageFilter.FIND_EDGES)
 

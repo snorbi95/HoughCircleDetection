@@ -29,10 +29,8 @@ def detect_circles(rgb_image_path: str, num_thetas: int = 120,
     thetas = np.arange(0, 360, step=delta_theta)
 
     # Definition of sin and cos of rotation angles
-    cos_thetas = np.cos(np.deg2rad(thetas))
-    cos_thetas = cos_thetas.astype(np.float32)
-    sin_thetas = np.sin(np.deg2rad(thetas))
-    sin_thetas = sin_thetas.astype(np.float32)
+    cos_thetas = np.cos(np.deg2rad(thetas)).astype(np.float32)
+    sin_thetas = np.sin(np.deg2rad(thetas)).astype(np.float32)
 
     # Definition of PyOpencl context and command queue
     context = pycl.create_some_context()
